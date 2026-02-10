@@ -1487,8 +1487,11 @@ section {
   text-align: center;
   padding: var(--space-sm) 0;
   font-size: 14px;
-  z-index: 998;
-  position: relative;
+  z-index: 999;
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
 }
 .coming-soon-banner p {
   margin: 0;
