@@ -1645,6 +1645,31 @@ section {
   margin: 0;
 }
 
+/* Scholar Video Coming Soon (YouTube-style) */
+.scholar-video-coming-soon {
+  margin-top: var(--space-lg);
+  aspect-ratio: 16 / 9;
+  background: #0f0f0f;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.video-coming-soon-content {
+  text-align: center;
+}
+.video-coming-soon-content .yt-play-icon {
+  opacity: 0.7;
+  margin-bottom: var(--space-md);
+}
+.video-coming-soon-content p {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
 /* Scholar Video Embeds (YouTube) */
 .scholar-video-embed {
   margin-top: var(--space-lg);
