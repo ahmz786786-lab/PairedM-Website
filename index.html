@@ -6,8 +6,1108 @@
   <title>PairedM — Islamic Matrimony | Unite By Meeting</title>
   <meta name="description" content="A revolutionary Nikah service that believes in matching through face-to-face meetings. Sharia-compliant, coordinator-supported, and FREE for sisters.">
   <link rel="icon" href="images/logo.png" type="image/png">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+
+  <style>
+    /* ============================================
+       PairedM Index Page — Enhanced Inline Styles
+       ============================================ */
+
+    /* --- Font overrides --- */
+    h1, h2, h3, h4, .section-label {
+      font-family: 'Nunito', 'Inter', sans-serif;
+    }
+
+    /* --- Navbar enhanced blur on scroll --- */
+    .header {
+      transition: background 0.3s, backdrop-filter 0.3s;
+    }
+    .header.scrolled {
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+
+    /* --- Brush Highlight Text Effect --- */
+    .brush-highlight {
+      position: relative;
+      display: inline;
+    }
+    .brush-highlight::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      width: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #E8720C, #F5A623);
+      opacity: 0.4;
+      border-radius: 3px;
+      z-index: -1;
+      transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .brush-highlight.sweep::after {
+      width: 100%;
+    }
+
+    /* --- Hero Testimonial Carousel --- */
+    .hero-testimonial-carousel {
+      margin-top: 32px;
+      perspective: 1200px;
+      max-width: 560px;
+      position: relative;
+      min-height: 120px;
+    }
+    .hero-testimonial-item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255,255,255,0.9);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      opacity: 0;
+      transform: rotateY(90deg) scale(0.9);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      pointer-events: none;
+      backdrop-filter: blur(8px);
+    }
+    .hero-testimonial-item.active {
+      opacity: 1;
+      transform: rotateY(0deg) scale(1);
+      pointer-events: auto;
+    }
+    .hero-testimonial-item p {
+      font-size: 14px;
+      font-style: italic;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+    .hero-testimonial-item .ht-author {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .hero-testimonial-item .ht-location {
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+    .hero-testimonial-dots {
+      display: flex;
+      gap: 8px;
+      margin-top: 130px;
+    }
+    .hero-testimonial-dots .ht-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+      border: none;
+      padding: 0;
+    }
+    .hero-testimonial-dots .ht-dot.active {
+      background: var(--red);
+      transform: scale(1.3);
+    }
+
+    [data-theme="dark"] .hero-testimonial-item {
+      background: rgba(36,36,36,0.9);
+    }
+
+    /* --- Stats Bar --- */
+    .stats-section {
+      padding: 48px 0;
+      background: var(--gradient-primary);
+      position: relative;
+      overflow: hidden;
+    }
+    .stats-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -10%;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+    }
+    .stats-section::after {
+      content: '';
+      position: absolute;
+      bottom: -40%;
+      right: -5%;
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-number {
+      font-family: 'Nunito', sans-serif;
+      font-size: 42px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-size: 14px;
+      color: rgba(255,255,255,0.85);
+      font-weight: 500;
+    }
+
+    /* --- Marquee Feature Pills --- */
+    .marquee-section {
+      padding: 40px 0;
+      background: linear-gradient(135deg, #D32F2F 0%, #E8720C 50%, #F5A623 100%);
+      overflow: hidden;
+    }
+    .marquee-row {
+      display: flex;
+      width: max-content;
+      gap: 16px;
+      padding: 8px 0;
+    }
+    .marquee-row-1 {
+      animation: marqueeLeft 35s linear infinite;
+    }
+    .marquee-row-2 {
+      animation: marqueeRight 35s linear infinite;
+    }
+    .marquee-section:hover .marquee-row {
+      animation-play-state: paused;
+    }
+    @keyframes marqueeLeft {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes marqueeRight {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+    .marquee-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border: 2px solid rgba(255,255,255,0.5);
+      border-radius: 9999px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: transform 0.3s, background 0.3s;
+      cursor: default;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(4px);
+    }
+    .marquee-pill:hover {
+      transform: translateY(-4px);
+      background: rgba(255,255,255,0.2);
+    }
+    .marquee-pill .pill-icon {
+      font-size: 16px;
+    }
+
+    /* --- Interactive Process Steps --- */
+    .process-interactive {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 48px;
+      align-items: start;
+      margin-top: 40px;
+    }
+    .process-steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .process-step-item {
+      display: flex;
+      gap: 20px;
+      padding: 24px;
+      cursor: pointer;
+      border-left: 4px solid var(--border);
+      transition: border-color 0.3s, background 0.3s;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    }
+    .process-step-item:hover {
+      background: var(--card);
+    }
+    .process-step-item.active {
+      border-left-color: var(--red);
+      background: var(--card);
+    }
+    .process-step-num {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--text-tertiary);
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+    .process-step-item.active .process-step-num {
+      background: var(--gradient-primary);
+      border-color: transparent;
+      color: #fff;
+    }
+    .process-step-info h3 {
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+    .process-step-info p {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .process-progress {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-top: 16px;
+      overflow: hidden;
+    }
+    .process-progress-bar {
+      height: 100%;
+      background: var(--gradient-primary);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+    .process-visual {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      min-height: 340px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.4s;
+    }
+    .process-visual-content {
+      text-align: center;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.4s, transform 0.4s;
+    }
+    .process-visual-content.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .process-visual-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+    .process-visual-content h3 {
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+    .process-visual-content p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    /* --- User Story Cards --- */
+    .stories-section {
+      padding: 64px 0;
+      background: var(--bg);
+    }
+    .stories-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .story-card {
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      cursor: pointer;
+      transition: transform 0.4s, box-shadow 0.4s;
+      position: relative;
+      overflow: hidden;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      color: #fff;
+    }
+    .story-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+    }
+    .story-card-1 { background: linear-gradient(160deg, #D32F2F, #E8720C); }
+    .story-card-2 { background: linear-gradient(160deg, #E8720C, #F5A623); }
+    .story-card-3 { background: linear-gradient(160deg, #D4A853, #D32F2F); }
+    .story-card-4 { background: linear-gradient(160deg, #B71C1C, #D4A853); }
+    .story-card-icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+    }
+    .story-card h4 {
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .story-card .story-tagline {
+      font-size: 13px;
+      color: rgba(255,255,255,0.8);
+      margin: 0;
+    }
+    .story-quote-panel {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s, margin 0.4s;
+      background: rgba(0,0,0,0.2);
+      border-radius: var(--radius-md);
+      margin-top: 0;
+      padding: 0 16px;
+    }
+    .story-card.expanded .story-quote-panel {
+      max-height: 200px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+    .story-quote-panel p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.9);
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    /* --- FAQ Accordion --- */
+    .faq-section {
+      padding: 64px 0;
+      background: var(--card);
+    }
+    .faq-list {
+      max-width: 720px;
+      margin: 40px auto 0;
+    }
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      background: var(--bg);
+      overflow: hidden;
+      transition: box-shadow 0.3s;
+    }
+    .faq-item:hover {
+      box-shadow: var(--shadow-sm);
+    }
+    .faq-question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-family: 'Nunito', 'Inter', sans-serif;
+      transition: color 0.3s;
+    }
+    .faq-question:hover {
+      color: var(--red);
+    }
+    .faq-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 300;
+      color: var(--text-tertiary);
+      flex-shrink: 0;
+      transition: transform 0.3s, background 0.3s, color 0.3s;
+    }
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+      background: var(--red);
+      color: #fff;
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .faq-answer-inner {
+      padding: 0 24px 20px;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    /* --- Parallax CTA Section --- */
+    .cta-section {
+      position: relative;
+      padding: 80px 0;
+      text-align: center;
+      overflow: hidden;
+      background: linear-gradient(135deg, #B71C1C, #D32F2F 50%, #1A1A1A);
+    }
+    .cta-section .cta-bg {
+      display: none;
+    }
+    .cta-particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .cta-particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.12;
+      animation: floatParticle 8s ease-in-out infinite;
+    }
+    .cta-particle:nth-child(1) { width: 120px; height: 120px; background: #F5A623; top: 10%; left: 5%; animation-delay: 0s; }
+    .cta-particle:nth-child(2) { width: 80px; height: 80px; background: #E8720C; top: 60%; left: 80%; animation-delay: 2s; }
+    .cta-particle:nth-child(3) { width: 60px; height: 60px; background: #D4A853; top: 30%; left: 60%; animation-delay: 4s; }
+    .cta-particle:nth-child(4) { width: 100px; height: 100px; background: #fff; top: 70%; left: 20%; animation-delay: 1s; }
+    .cta-particle:nth-child(5) { width: 50px; height: 50px; background: #F5A623; top: 15%; left: 85%; animation-delay: 3s; }
+    @keyframes floatParticle {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-30px) rotate(180deg); }
+    }
+    .cta-section h2 {
+      color: #fff;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    .cta-section h2 .text-gradient {
+      background: linear-gradient(135deg, #F5A623, #fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .cta-section p {
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 32px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      z-index: 1;
+    }
+    .cta-section .btn {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* --- App Coming Soon Section --- */
+    .app-coming-section {
+      padding: 80px 0;
+      background: var(--bg);
+      overflow: hidden;
+    }
+    .app-coming-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .app-coming-text h2 {
+      margin-bottom: 16px;
+    }
+    .app-coming-text p {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+    .app-notify-form {
+      display: flex;
+      gap: 12px;
+    }
+    .app-notify-form input {
+      flex: 1;
+      padding: 14px 20px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-full);
+      background: var(--card);
+      color: var(--text-primary);
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .app-notify-form input:focus {
+      border-color: var(--orange);
+    }
+    .app-notify-form .btn {
+      white-space: nowrap;
+    }
+
+    /* Phone Mockup */
+    .phone-mockup {
+      width: 260px;
+      height: 520px;
+      background: #1A1A1A;
+      border-radius: 36px;
+      padding: 12px;
+      margin: 0 auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    .phone-mockup::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 24px;
+      background: #1A1A1A;
+      border-radius: 0 0 14px 14px;
+      z-index: 2;
+    }
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, #D32F2F 0%, #E8720C 40%, #fff 40%);
+      border-radius: 26px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .phone-header {
+      background: linear-gradient(135deg, #D32F2F, #E8720C);
+      padding: 40px 20px 20px;
+      text-align: center;
+    }
+    .phone-header img {
+      height: 28px;
+      margin: 0 auto 8px;
+      filter: brightness(0) invert(1);
+    }
+    .phone-header-text {
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      opacity: 0.9;
+    }
+    .phone-body {
+      flex: 1;
+      background: #fff;
+      padding: 16px;
+    }
+    .phone-card {
+      background: #f8f8f8;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+    .phone-card-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .phone-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--gradient-primary);
+    }
+    .phone-card-lines {
+      flex: 1;
+    }
+    .phone-line {
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+    .phone-line:last-child {
+      width: 60%;
+      margin-bottom: 0;
+    }
+    .phone-btn-mock {
+      display: block;
+      margin: 12px auto 0;
+      width: 80%;
+      height: 32px;
+      background: var(--gradient-primary);
+      border-radius: 16px;
+    }
+
+    [data-theme="dark"] .phone-body {
+      background: #242424;
+    }
+    [data-theme="dark"] .phone-card {
+      background: #333;
+    }
+    [data-theme="dark"] .phone-line {
+      background: #444;
+    }
+
+    /* --- Trust Signals Section --- */
+    .trust-section {
+      padding: 48px 0;
+      background: linear-gradient(135deg, #1A1A1A, #2c2c2c);
+    }
+    .trust-section .section-title {
+      color: #fff;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+    }
+    .trust-item {
+      text-align: center;
+      padding: 24px 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-lg);
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .trust-item:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,0.3);
+    }
+    .trust-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+    .trust-item h4 {
+      font-size: 14px;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /* --- General card hover lift --- */
+    .service-card:hover,
+    .feature-card:hover,
+    .testimonial-card:hover,
+    .step-card:hover {
+      transform: translateY(-4px);
+    }
+    .testimonial-card {
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .testimonial-card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* --- Scroll-triggered animations with stagger --- */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fade-up-d1 { transition-delay: 0.1s; }
+    .fade-up-d2 { transition-delay: 0.2s; }
+    .fade-up-d3 { transition-delay: 0.3s; }
+    .fade-up-d4 { transition-delay: 0.4s; }
+    .fade-up-d5 { transition-delay: 0.5s; }
+
+    /* --- Coming soon banner: hide original, replaced by App section --- */
+    .coming-soon-banner {
+      display: none !important;
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 1024px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+      }
+      .stories-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .trust-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .process-interactive {
+        grid-template-columns: 1fr;
+      }
+      .process-visual {
+        min-height: 240px;
+      }
+      .app-coming-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .app-notify-form {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+      }
+      .stat-number {
+        font-size: 32px;
+      }
+      .stories-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .trust-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .app-coming-grid {
+        grid-template-columns: 1fr;
+      }
+      .app-notify-form {
+        flex-direction: column;
+      }
+      .phone-mockup {
+        width: 220px;
+        height: 440px;
+      }
+      .hero-testimonial-carousel {
+        max-width: 100%;
+      }
+      .hero-testimonial-dots {
+        margin-top: 140px;
+      }
+      #the-problem [style*="grid-template-columns: 1fr 1fr;"] {
+        grid-template-columns: 1fr !important;
+      }
+      #the-problem [style*="grid-template-columns: 1fr 1fr 1fr;"] {
+        grid-template-columns: 1fr !important;
+      }
+      #why-us table {
+        font-size: 13px;
+      }
+      #why-us table th,
+      #why-us table td {
+        padding: 10px 12px !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      .stat-number {
+        font-size: 28px;
+      }
+      .trust-grid {
+        grid-template-columns: 1fr;
+        max-width: 280px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .marquee-pill {
+        padding: 8px 16px;
+        font-size: 12px;
+      }
+    }
+
+    /* ── Explainer Video ── */
+    .explainer-video {
+      max-width: 900px;
+      margin: 0 auto var(--space-3xl);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #FAFAFA;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] .explainer-video {
+      background: #1E1E1E;
+    }
+    .explainer-screen {
+      position: relative;
+      overflow: hidden;
+    }
+    .explainer-scene {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      pointer-events: none;
+    }
+    .explainer-scene.active {
+      position: relative;
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+    /* Force all scenes to same height as first scene */
+    .explainer-scene .explainer-scene-inner {
+      min-height: 360px;
+    }
+    .explainer-scene-inner {
+      display: flex;
+      align-items: center;
+      gap: 48px;
+      padding: 40px;
+    }
+    .explainer-phone {
+      width: 190px;
+      flex-shrink: 0;
+      background: #1a1a1a;
+      border-radius: 26px;
+      padding: 6px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+      position: relative;
+    }
+    .explainer-phone-notch {
+      position: absolute;
+      top: 7px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 56px;
+      height: 16px;
+      background: #1a1a1a;
+      border-radius: 10px;
+      z-index: 5;
+    }
+    .explainer-phone-screen {
+      background: #fff;
+      border-radius: 22px;
+      overflow: hidden;
+      height: 340px;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+    .explainer-phone-screen::-webkit-scrollbar { display: none; }
+    .explainer-phone-screen .explainer-match-card { padding: 7px; margin-bottom: 5px; }
+    .explainer-phone-screen .explainer-btn { padding: 7px; font-size: 11px; }
+    [data-theme="dark"] .explainer-phone-screen {
+      background: #242424;
+    }
+    [data-theme="dark"] .explainer-phone-screen div[style*="color:#1A1A1A"],
+    [data-theme="dark"] .explainer-phone-screen .explainer-field-val {
+      color: #fff !important;
+    }
+    .explainer-field {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+      margin: 0;
+      opacity: 0;
+      animation: explainerFieldIn 0.4s ease forwards;
+    }
+    [data-theme="dark"] .explainer-field {
+      border-bottom-color: #333;
+    }
+    .explainer-scene.active .explainer-field {
+      opacity: 0;
+      animation: explainerFieldIn 0.4s ease forwards;
+    }
+    @keyframes explainerFieldIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .explainer-field-label {
+      font-size: 11px;
+      color: #888;
+      font-weight: 500;
+    }
+    .explainer-field-val {
+      font-size: 12px;
+      font-weight: 600;
+      color: #1A1A1A;
+    }
+    .explainer-btn {
+      text-align: center;
+      padding: 10px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #D32F2F, #E8720C);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      opacity: 0;
+      animation: explainerFieldIn 0.4s ease forwards;
+    }
+    .explainer-match-card {
+      background: #f9f9f9;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 8px;
+      opacity: 0;
+      animation: explainerFieldIn 0.5s ease forwards;
+    }
+    [data-theme="dark"] .explainer-match-card {
+      background: #2a2a2a;
+      border-color: #333;
+    }
+    .explainer-text {
+      flex: 1;
+    }
+    .explainer-text h3 {
+      font-family: 'Nunito', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    .explainer-text p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    .explainer-step-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 20px;
+      background: rgba(211,47,47,0.1);
+      color: #D32F2F;
+      margin-bottom: 12px;
+    }
+    .explainer-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 24px;
+      background: #f0f0f0;
+      border-top: 1px solid var(--border);
+    }
+    [data-theme="dark"] .explainer-controls {
+      background: #1a1a1a;
+    }
+    .explainer-play-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #D32F2F, #E8720C);
+      border: none;
+      color: #fff;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+    .explainer-play-btn:hover {
+      transform: scale(1.1);
+    }
+    .explainer-timeline {
+      flex: 1;
+      height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    [data-theme="dark"] .explainer-timeline {
+      background: #333;
+    }
+    .explainer-timeline-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #D32F2F, #E8720C);
+      border-radius: 2px;
+      transition: width 0.1s linear;
+    }
+    .explainer-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .explainer-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ccc;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    [data-theme="dark"] .explainer-dot {
+      background: #444;
+    }
+    .explainer-dot.active {
+      background: #D32F2F;
+      transform: scale(1.3);
+    }
+    .explainer-dot:hover {
+      background: #E8720C;
+    }
+
+    @media (max-width: 768px) {
+      .explainer-scene-inner {
+        flex-direction: column;
+        padding: 24px 16px;
+        gap: 24px;
+      }
+      .explainer-phone {
+        width: 180px;
+      }
+      .explainer-phone-screen {
+        min-height: 280px;
+      }
+      .explainer-screen {
+        min-height: auto;
+      }
+      .explainer-text h3 {
+        font-size: 20px;
+        text-align: center;
+      }
+      .explainer-text p {
+        font-size: 14px;
+        text-align: center;
+      }
+      .explainer-step-badge {
+        display: block;
+        text-align: center;
+      }
+    }
+    @media (max-width: 480px) {
+      .explainer-phone {
+        width: 160px;
+        border-radius: 24px;
+        padding: 6px;
+      }
+      .explainer-phone-notch {
+        width: 56px;
+        height: 18px;
+        top: 8px;
+      }
+      .explainer-phone-screen {
+        border-radius: 20px;
+        min-height: 240px;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -49,6 +1149,7 @@
     </button>
   </div>
 
+  <!-- Coming Soon Banner (hidden, replaced by App Coming Soon section) -->
   <div class="coming-soon-banner">
     <div class="container">
       <p><strong>Coming Soon:</strong> The PairedM App is currently in development to enhance your journey.</p>
@@ -58,7 +1159,6 @@
   <!-- Hero -->
   <section class="hero">
     <div class="hero-bg">
-      <!-- Background video placeholder — replace src with actual video when available -->
       <video
         class="hero-video"
         autoplay
@@ -67,9 +1167,7 @@
         playsinline
         poster="images/banner-soulmate.jpg"
         src="videos/hero-bg.mp4"
-      >
-        <!-- Fallback: if video cannot load, poster image is shown and slider remains visible -->
-      </video>
+      ></video>
       <div class="hero-slider">
         <div class="hero-slide active">
           <img src="images/banner-soulmate.jpg" alt="Ready to find your soulmate">
@@ -91,71 +1189,406 @@
 
     <div class="container">
       <div class="hero-content">
-        <p class="section-label">Islamic Matrimony Platform</p>
-        <h1>A Revolutionary <span class="text-gradient">Nikah Service</span></h1>
-        <p>The first Nikah service where all meetings are Face to Face with support from our team on every call. Certified Halal as approved by our Islamic board of scholars.</p>
+        <p class="section-label">The UK's First Face-to-Face Islamic Matchmaking Service</p>
+        <h1>Stop Swiping.<br>Start <span class="brush-highlight text-gradient">Meeting.</span></h1>
+        <p>Other apps let you swipe and chat forever with no real outcome. PairedM is different — every match leads to a <strong>real, supervised face-to-face meeting</strong> with a dedicated coordinator present. No ghosting. No time-wasting. Just serious, Sharia-compliant matchmaking that actually leads to Nikah.</p>
         <div class="hero-buttons">
           <a href="register.html" class="btn btn-primary btn-lg btn-arrow">Get Started</a>
           <a href="the-process.html" class="btn btn-outline btn-lg">Learn More</a>
         </div>
         <div class="hero-tags">
-          <span class="hero-tag"><span class="tag-icon">✓</span> Sharia-Compliant</span>
-          <span class="hero-tag"><span class="tag-icon">✓</span> FREE for Sisters</span>
-          <span class="hero-tag"><span class="tag-icon">✓</span> Verified Profiles</span>
-          <span class="hero-tag"><span class="tag-icon">✓</span> Coordinator Support</span>
+          <span class="hero-tag"><span class="tag-icon">&#10003;</span> Sharia-Compliant</span>
+          <span class="hero-tag"><span class="tag-icon">&#10003;</span> FREE for Sisters</span>
+          <span class="hero-tag"><span class="tag-icon">&#10003;</span> Verified Profiles</span>
+          <span class="hero-tag"><span class="tag-icon">&#10003;</span> Coordinator Support</span>
+        </div>
+
+        <!-- Hero Testimonial Carousel -->
+        <div class="hero-testimonial-carousel">
+          <div class="hero-testimonial-item active" data-ht="0">
+            <p>"The process was so smooth. The coordinators were supportive throughout and I found my soul partner. Alhamdulillah!"</p>
+            <div class="ht-author">Amelia</div>
+            <div class="ht-location">Manchester, UK</div>
+          </div>
+          <div class="hero-testimonial-item" data-ht="1">
+            <p>"We got engaged and married within a few months. PairedM made the whole journey stress-free. Truly blessed."</p>
+            <div class="ht-author">Sophia</div>
+            <div class="ht-location">Newport, UK</div>
+          </div>
+          <div class="hero-testimonial-item" data-ht="2">
+            <p>"I want to say thanks to the entire team for giving me the opportunity to meet my soul mate. JazakAllah Khair."</p>
+            <div class="ht-author">Imran</div>
+            <div class="ht-location">Newsland, UK</div>
+          </div>
+          <div class="hero-testimonial-dots">
+            <button class="ht-dot active" data-ht-dot="0" aria-label="Testimonial 1"></button>
+            <button class="ht-dot" data-ht-dot="1" aria-label="Testimonial 2"></button>
+            <button class="ht-dot" data-ht-dot="2" aria-label="Testimonial 3"></button>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Banner Carousel -->
-  <section class="banner-section">
+  <!-- Animated Stat Counters -->
+  <section class="stats-section">
     <div class="container">
-      <div class="banner-carousel">
-        <div class="banner-item"><img src="images/banner-journey-map.jpg" alt="Your journey to finding your match"></div>
-        <div class="banner-item"><img src="images/banner-zero-fees.jpg" alt="Zero subscription fees"></div>
-        <div class="banner-item"><img src="images/banner-tailored-service.jpg" alt="Tailored service"></div>
-        <div class="banner-item"><img src="images/banner-deen.jpg" alt="Marry someone interested in the Deen"></div>
-        <div class="banner-item"><img src="images/banner-certified-halal.jpg" alt="Certified Halal service"></div>
-        <div class="banner-item"><img src="images/banner-nationwide.jpg" alt="Nationwide availability"></div>
-        <div class="banner-item"><img src="images/banner-free-sisters.jpg" alt="Free for sisters"></div>
-        <div class="banner-item"><img src="images/banner-sharia.jpg" alt="Sharia compliant"></div>
+      <div class="stats-grid">
+        <div class="stat-item fade-up">
+          <div class="stat-number" data-count="500" data-suffix="+">0</div>
+          <div class="stat-label">Successful Matches</div>
+        </div>
+        <div class="stat-item fade-up fade-up-d1">
+          <div class="stat-number" data-count="100" data-suffix="+">0</div>
+          <div class="stat-label">Nikah Ceremonies</div>
+        </div>
+        <div class="stat-item fade-up fade-up-d2">
+          <div class="stat-number" data-count="50" data-suffix="+">0</div>
+          <div class="stat-label">UK Cities</div>
+        </div>
+        <div class="stat-item fade-up fade-up-d3">
+          <div class="stat-number" data-count="100" data-suffix="%">0</div>
+          <div class="stat-label">Sharia Compliant</div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- How It Works -->
-  <section id="how-it-works">
-    <div class="container text-center">
-      <p class="section-label fade-in">How It Works</p>
-      <h2 class="section-title fade-in">Your Journey to a <span class="text-gradient">Blessed Union</span></h2>
-      <p class="section-subtitle fade-in">Three simple steps to start your search for a spouse who brings you closer to Allah.</p>
+  <!-- The Problem / Our Revolution -->
+  <section id="the-problem" style="background: var(--bg);">
+    <div class="container">
+      <div class="text-center">
+        <p class="section-label fade-up">The Problem</p>
+        <h2 class="section-title fade-up">Muslim dating apps are <span class="text-gradient">broken</span></h2>
+        <p class="section-subtitle fade-up">And the Muslim community deserves better than what's out there.</p>
+      </div>
 
-      <div class="how-it-works-video fade-in">
-        <div class="video-placeholder-content">
-          <div class="video-play-icon">&#9654;</div>
-          <p>Watch how PairedM works</p>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:32px; max-width:900px; margin:0 auto 48px;">
+        <div class="fade-up fade-up-d1" style="background:var(--card); border:1px solid var(--border); border-radius:14px; padding:28px; border-left:4px solid #EF4444;">
+          <div style="font-size:28px; margin-bottom:12px;">😔</div>
+          <h4 style="font-size:18px; margin-bottom:8px; color:var(--text-primary);">Endless Swiping, No Outcome</h4>
+          <p style="font-size:14px;">Apps like Muzz and Muzmatch encourage hours of swiping and chatting — but most conversations die out. You're left with hundreds of matches and zero real meetings.</p>
+        </div>
+        <div class="fade-up fade-up-d2" style="background:var(--card); border:1px solid var(--border); border-radius:14px; padding:28px; border-left:4px solid #EF4444;">
+          <div style="font-size:28px; margin-bottom:12px;">👻</div>
+          <h4 style="font-size:18px; margin-bottom:8px; color:var(--text-primary);">Ghosting &amp; Time-Wasting</h4>
+          <p style="font-size:14px;">No accountability. People disappear mid-conversation. There's no commitment to actually meeting — it's just another social media app in disguise.</p>
+        </div>
+        <div class="fade-up fade-up-d3" style="background:var(--card); border:1px solid var(--border); border-radius:14px; padding:28px; border-left:4px solid #EF4444;">
+          <div style="font-size:28px; margin-bottom:12px;">⚠️</div>
+          <h4 style="font-size:18px; margin-bottom:8px; color:var(--text-primary);">No Islamic Oversight</h4>
+          <p style="font-size:14px;">Most platforms have no scholars involved. Private messaging with no supervision? That's not how the Sunnah guides us to find a spouse.</p>
+        </div>
+        <div class="fade-up fade-up-d4" style="background:var(--card); border:1px solid var(--border); border-radius:14px; padding:28px; border-left:4px solid #EF4444;">
+          <div style="font-size:28px; margin-bottom:12px;">💸</div>
+          <h4 style="font-size:18px; margin-bottom:8px; color:var(--text-primary);">Expensive Subscriptions</h4>
+          <p style="font-size:14px;">£15-£30/month just to see who liked you or send a message? These apps profit from keeping you single longer. The longer you stay, the more they earn.</p>
         </div>
       </div>
 
-      <div class="steps-grid">
-        <div class="step-card fade-in fade-in-delay-1">
-          <div class="step-number">1</div>
-          <div class="step-icon">👤</div>
-          <h3>Create A Profile</h3>
-          <p>Start your PairedM journey by giving us your name, where you're from, and choose your best picture.</p>
+      <div class="text-center">
+        <p class="section-label fade-up" style="color:var(--success);">Our Revolution</p>
+        <h2 class="section-title fade-up">PairedM flips the script <span class="text-gradient">completely</span></h2>
+        <p class="section-subtitle fade-up">We built PairedM on one radical idea: <strong>every single match must lead to a real, face-to-face meeting</strong>. Not a chat. Not a like. A real meeting.</p>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:24px; max-width:1000px; margin:0 auto;">
+        <div class="fade-up fade-up-d1" style="background:var(--card); border:2px solid var(--border); border-radius:16px; padding:28px; text-align:center; transition:transform 0.3s,border-color 0.3s;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='var(--red)'" onmouseout="this.style.transform='';this.style.borderColor='var(--border)'">
+          <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#D32F2F,#E8720C);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:26px;">👥</div>
+          <h4 style="font-size:17px; margin-bottom:8px; color:var(--text-primary);">Coordinator in Every Meeting</h4>
+          <p style="font-size:14px;">A real person — not a chatbot — is present in every single call and meeting. They guide the conversation, ensure Islamic etiquette, and keep things moving forward.</p>
         </div>
-        <div class="step-card fade-in fade-in-delay-2">
-          <div class="step-number">2</div>
-          <div class="step-icon">⚙️</div>
-          <h3>Set Preferences</h3>
-          <p>Add in all your preferences. Preferred height, ideal age, location, and what matters most to you.</p>
+        <div class="fade-up fade-up-d2" style="background:var(--card); border:2px solid var(--border); border-radius:16px; padding:28px; text-align:center; transition:transform 0.3s,border-color 0.3s;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='var(--red)'" onmouseout="this.style.transform='';this.style.borderColor='var(--border)'">
+          <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#D32F2F,#E8720C);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:26px;">📈</div>
+          <h4 style="font-size:17px; margin-bottom:8px; color:var(--text-primary);">3-Level Meeting System</h4>
+          <p style="font-size:14px;"><strong>Level 1:</strong> Supervised video call. <strong>Level 2:</strong> Meet at a mosque. <strong>Level 3:</strong> Venue meeting with families. Then Nikah. A structured path to marriage — not an endless chat loop.</p>
         </div>
-        <div class="step-card fade-in fade-in-delay-3">
-          <div class="step-number">3</div>
-          <div class="step-icon">💑</div>
-          <h3>Match &amp; Meet</h3>
-          <p>See someone you like? Great. Just click 'Pair Me' and we'll take it from there with coordinator support.</p>
+        <div class="fade-up fade-up-d3" style="background:var(--card); border:2px solid var(--border); border-radius:16px; padding:28px; text-align:center; transition:transform 0.3s,border-color 0.3s;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='var(--red)'" onmouseout="this.style.transform='';this.style.borderColor='var(--border)'">
+          <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#D32F2F,#E8720C);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:26px;">🕌</div>
+          <h4 style="font-size:17px; margin-bottom:8px; color:var(--text-primary);">Islamic Board Oversight</h4>
+          <p style="font-size:14px;">Every process, every meeting format, every interaction is approved by our Board of Islamic Scholars. This isn't "halal-ish" — it's <strong>certified halal</strong>.</p>
+        </div>
+      </div>
+
+      <div class="text-center fade-up" style="margin-top:40px;">
+        <div style="background:linear-gradient(135deg,rgba(211,47,47,0.06),rgba(232,114,12,0.06)); border:1px solid rgba(211,47,47,0.15); border-radius:16px; padding:32px; max-width:700px; margin:0 auto;">
+          <p style="font-size:18px; font-weight:600; color:var(--text-primary); line-height:1.7; margin:0;">
+            "Other apps want you to stay single — they charge monthly. <strong style="color:#D32F2F;">We want you married</strong>. That's why we charge per meeting, not per month. When you succeed, we succeed."
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Marquee Feature Pills -->
+  <section class="marquee-section">
+    <div class="marquee-row marquee-row-1">
+      <span class="marquee-pill"><span class="pill-icon">&#10084;</span> Free for Sisters</span>
+      <span class="marquee-pill"><span class="pill-icon">&#9782;</span> Sharia Certified</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128101;</span> Coordinator Support</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128588;</span> Face-to-Face Meetings</span>
+      <span class="marquee-pill"><span class="pill-icon">&#9989;</span> Verified Profiles</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128176;</span> Pay As You Go</span>
+      <span class="marquee-pill"><span class="pill-icon">&#127468;&#127463;</span> UK Nationwide</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128220;</span> Islamic Board Approved</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128683;</span> Zero Subscriptions</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128270;</span> Background Checked</span>
+      <!-- Duplicate for seamless loop -->
+      <span class="marquee-pill"><span class="pill-icon">&#10084;</span> Free for Sisters</span>
+      <span class="marquee-pill"><span class="pill-icon">&#9782;</span> Sharia Certified</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128101;</span> Coordinator Support</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128588;</span> Face-to-Face Meetings</span>
+      <span class="marquee-pill"><span class="pill-icon">&#9989;</span> Verified Profiles</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128176;</span> Pay As You Go</span>
+      <span class="marquee-pill"><span class="pill-icon">&#127468;&#127463;</span> UK Nationwide</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128220;</span> Islamic Board Approved</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128683;</span> Zero Subscriptions</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128270;</span> Background Checked</span>
+    </div>
+    <div class="marquee-row marquee-row-2">
+      <span class="marquee-pill"><span class="pill-icon">&#128249;</span> Video Calls</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128332;</span> Mosque Meetups</span>
+      <span class="marquee-pill"><span class="pill-icon">&#127970;</span> Venue Arrangements</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128141;</span> Nikah Planning</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128106;</span> Family Involvement</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128100;</span> Imam Support</span>
+      <span class="marquee-pill"><span class="pill-icon">&#9989;</span> Halal Certified</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128274;</span> Safe &amp; Secure</span>
+      <span class="marquee-pill"><span class="pill-icon">&#9881;</span> Tailored Service</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128172;</span> WhatsApp Updates</span>
+      <!-- Duplicate for seamless loop -->
+      <span class="marquee-pill"><span class="pill-icon">&#128249;</span> Video Calls</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128332;</span> Mosque Meetups</span>
+      <span class="marquee-pill"><span class="pill-icon">&#127970;</span> Venue Arrangements</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128141;</span> Nikah Planning</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128106;</span> Family Involvement</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128100;</span> Imam Support</span>
+      <span class="marquee-pill"><span class="pill-icon">&#9989;</span> Halal Certified</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128274;</span> Safe &amp; Secure</span>
+      <span class="marquee-pill"><span class="pill-icon">&#9881;</span> Tailored Service</span>
+      <span class="marquee-pill"><span class="pill-icon">&#128172;</span> WhatsApp Updates</span>
+    </div>
+  </section>
+
+  <!-- How It Works — Interactive Process Steps -->
+  <section id="how-it-works">
+    <div class="container">
+      <div class="text-center">
+        <p class="section-label fade-up">How It Works</p>
+        <h2 class="section-title fade-up">From Match to <span class="brush-highlight text-gradient">Nikah</span> — Our 3-Level System</h2>
+        <p class="section-subtitle fade-up">Unlike other apps where you swipe and chat forever, PairedM has a <strong>structured path</strong> that moves you towards marriage. Every level has a real meeting — with a coordinator present.</p>
+      </div>
+
+      <!-- Animated Explainer "Video" -->
+      <div class="explainer-video fade-up" id="explainerVideo">
+        <div class="explainer-screen">
+          <!-- LEVEL 1: Supervised Video Call -->
+          <div class="explainer-scene active" data-scene="0">
+            <div class="explainer-scene-inner">
+              <div class="explainer-phone">
+                <div class="explainer-phone-notch"></div>
+                <div class="explainer-phone-screen">
+                  <div style="padding:16px 10px 4px; text-align:center;">
+                    <div style="font-size:9px;padding:3px 10px;border-radius:10px;background:linear-gradient(135deg,#D32F2F,#E8720C);color:#fff;font-weight:700;display:inline-block;margin-bottom:8px;">LEVEL 1</div>
+                    <div style="font-size:14px;font-weight:700;color:#1A1A1A;margin-bottom:2px;">Supervised Video Call</div>
+                    <div style="font-size:9px;color:#888;">Your coordinator is on the call with you</div>
+                  </div>
+                  <div style="padding:5px 10px;">
+                    <div class="explainer-match-card" style="animation-delay:0.3s;background:#f0fdf4;border:1px solid #bbf7d0;">
+                      <div style="display:flex;align-items:center;gap:8px;">
+                        <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#D32F2F,#E8720C);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;">A</div>
+                        <div style="flex:1;"><div style="font-size:11px;font-weight:700;color:#1A1A1A;">Ahmed, 28</div><div style="font-size:8px;color:#888;">Manchester</div></div>
+                        <div style="font-size:18px;">📹</div>
+                        <div style="flex:1;text-align:right;"><div style="font-size:11px;font-weight:700;color:#1A1A1A;">Sarah, 26</div><div style="font-size:8px;color:#888;">London</div></div>
+                        <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#E8720C,#F5A623);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;">S</div>
+                      </div>
+                    </div>
+                    <div class="explainer-match-card" style="animation-delay:0.6s;border-left:3px solid #D32F2F;">
+                      <div style="font-size:10px;font-weight:700;color:#D32F2F;margin-bottom:3px;">👥 Coordinator Present</div>
+                      <div style="font-size:9px;color:#555;line-height:1.4;">Brother Usman is hosting this call. He'll guide the conversation, ensure Islamic etiquette, and help you both feel comfortable.</div>
+                    </div>
+                    <div class="explainer-match-card" style="animation-delay:0.9s;">
+                      <div style="font-size:9px;color:#888;margin-bottom:4px;">Call Agenda</div>
+                      <div style="font-size:9px;color:#555;">✓ Introductions &amp; background</div>
+                      <div style="font-size:9px;color:#555;">✓ Values &amp; expectations</div>
+                      <div style="font-size:9px;color:#555;">✓ Questions from both sides</div>
+                    </div>
+                  </div>
+                  <div style="padding:6px 10px;"><div class="explainer-btn" style="animation-delay:1.2s;">Complete Level 1 ✓</div></div>
+                </div>
+              </div>
+              <div class="explainer-text">
+                <div class="explainer-step-badge">Level 1 — First Meeting</div>
+                <h3>Supervised Video Call</h3>
+                <p>No awkward DMs. No ghosting. Your very first interaction is a <strong>real video call</strong> with a PairedM coordinator hosting the conversation. They guide the discussion, ensure Islamic etiquette is maintained, and keep things moving. Both parties give feedback after — if it's mutual, you progress to Level 2.</p>
+                <div style="margin-top:12px;font-size:13px;color:var(--text-tertiary);">💰 Cost: £5 per person (FREE for sisters)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- LEVEL 2: Mosque Meeting -->
+          <div class="explainer-scene" data-scene="1">
+            <div class="explainer-scene-inner">
+              <div class="explainer-phone">
+                <div class="explainer-phone-notch"></div>
+                <div class="explainer-phone-screen">
+                  <div style="padding:16px 10px 4px; text-align:center;">
+                    <div style="font-size:9px;padding:3px 10px;border-radius:10px;background:linear-gradient(135deg,#E8720C,#F5A623);color:#fff;font-weight:700;display:inline-block;margin-bottom:8px;">LEVEL 2</div>
+                    <div style="font-size:14px;font-weight:700;color:#1A1A1A;margin-bottom:2px;">Meet at a Mosque</div>
+                    <div style="font-size:9px;color:#888;">Face-to-face in a sacred, safe space</div>
+                  </div>
+                  <div style="padding:5px 10px;">
+                    <div class="explainer-match-card" style="animation-delay:0.3s;background:#fffbeb;border:1px solid #fde68a;">
+                      <div style="font-size:22px;text-align:center;margin-bottom:4px;">🕌</div>
+                      <div style="font-size:11px;font-weight:700;color:#1A1A1A;text-align:center;">East London Mosque</div>
+                      <div style="font-size:9px;color:#888;text-align:center;">Saturday, 2:00 PM — Meeting Room B</div>
+                    </div>
+                    <div class="explainer-match-card" style="animation-delay:0.6s;border-left:3px solid #E8720C;">
+                      <div style="font-size:10px;font-weight:700;color:#E8720C;margin-bottom:3px;">👥 Coordinator: Sister Amina</div>
+                      <div style="font-size:9px;color:#555;line-height:1.4;">Will be present throughout to supervise. Local Imam has been informed and may join to offer guidance.</div>
+                    </div>
+                    <div class="explainer-match-card" style="animation-delay:0.9s;">
+                      <div style="font-size:9px;color:#888;margin-bottom:4px;">What happens at Level 2</div>
+                      <div style="font-size:9px;color:#555;">✓ Meet in person for the first time</div>
+                      <div style="font-size:9px;color:#555;">✓ Deeper conversation about future goals</div>
+                      <div style="font-size:9px;color:#555;">✓ Imam available for Islamic guidance</div>
+                    </div>
+                  </div>
+                  <div style="padding:6px 10px;"><div class="explainer-btn" style="animation-delay:1.2s;background:linear-gradient(135deg,#E8720C,#F5A623);">Complete Level 2 ✓</div></div>
+                </div>
+              </div>
+              <div class="explainer-text">
+                <div class="explainer-step-badge" style="background:rgba(232,114,12,0.1);color:#E8720C;">Level 2 — Getting Serious</div>
+                <h3>Meet at a Mosque</h3>
+                <p>Video went well? Time for a <strong>real, in-person meeting at a local mosque</strong>. Our coordinator arranges everything — the venue, the time, and they're present throughout. A local Imam can join to offer Islamic guidance. This is where you truly get to know someone, face-to-face, in a blessed setting.</p>
+                <div style="margin-top:12px;font-size:13px;color:var(--text-tertiary);">💰 Cost: £10 per person (FREE for sisters)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- LEVEL 3: Family Meeting at Venue -->
+          <div class="explainer-scene" data-scene="2">
+            <div class="explainer-scene-inner">
+              <div class="explainer-phone">
+                <div class="explainer-phone-notch"></div>
+                <div class="explainer-phone-screen">
+                  <div style="padding:16px 10px 4px; text-align:center;">
+                    <div style="font-size:9px;padding:3px 10px;border-radius:10px;background:linear-gradient(135deg,#F5A623,#D4A853);color:#fff;font-weight:700;display:inline-block;margin-bottom:8px;">LEVEL 3</div>
+                    <div style="font-size:14px;font-weight:700;color:#1A1A1A;margin-bottom:2px;">Family Meeting</div>
+                    <div style="font-size:9px;color:#888;">Both families meet at a venue of your choice</div>
+                  </div>
+                  <div style="padding:5px 10px;">
+                    <div class="explainer-match-card" style="animation-delay:0.3s;background:#fffbeb;border:1px solid #fde68a;">
+                      <div style="font-size:22px;text-align:center;margin-bottom:4px;">👨‍👩‍👦 🤝 👨‍👩‍👧</div>
+                      <div style="font-size:11px;font-weight:700;color:#1A1A1A;text-align:center;">Both Families Meeting</div>
+                      <div style="font-size:9px;color:#888;text-align:center;">The Grand Hotel, Birmingham — Sunday 3 PM</div>
+                    </div>
+                    <div class="explainer-match-card" style="animation-delay:0.6s;border-left:3px solid #D4A853;">
+                      <div style="font-size:10px;font-weight:700;color:#D4A853;margin-bottom:3px;">👥 Coordinator: Brother Usman</div>
+                      <div style="font-size:9px;color:#555;line-height:1.4;">Present to introduce both families, facilitate the conversation, and ensure everything runs smoothly.</div>
+                    </div>
+                    <div class="explainer-match-card" style="animation-delay:0.9s;">
+                      <div style="font-size:9px;color:#888;margin-bottom:4px;">What happens at Level 3</div>
+                      <div style="font-size:9px;color:#555;">✓ Parents &amp; families formally introduced</div>
+                      <div style="font-size:9px;color:#555;">✓ Discuss future plans &amp; expectations</div>
+                      <div style="font-size:9px;color:#555;">✓ Venue, catering &amp; logistics arranged by us</div>
+                    </div>
+                  </div>
+                  <div style="padding:6px 10px;"><div class="explainer-btn" style="animation-delay:1.2s;background:linear-gradient(135deg,#F5A623,#D4A853);">Complete Level 3 ✓</div></div>
+                </div>
+              </div>
+              <div class="explainer-text">
+                <div class="explainer-step-badge" style="background:rgba(212,168,83,0.1);color:#D4A853;">Level 3 — Families Get Involved</div>
+                <h3>Family Meeting at a Venue</h3>
+                <p>Things are getting serious. <strong>Both families meet at a venue of your choice</strong> — a restaurant, hotel, or community centre. PairedM arranges everything: the booking, the setup, and our coordinator is there to facilitate introductions. This is where parents ask their questions and give their blessings.</p>
+                <div style="margin-top:12px;font-size:13px;color:var(--text-tertiary);">💰 Venue costs vary — we handle all logistics</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- LEVEL 4: Nikah Ceremony -->
+          <div class="explainer-scene" data-scene="3">
+            <div class="explainer-scene-inner">
+              <div class="explainer-phone">
+                <div class="explainer-phone-notch"></div>
+                <div class="explainer-phone-screen">
+                  <div style="padding:16px 10px 4px; text-align:center;">
+                    <div style="font-size:9px;padding:3px 10px;border-radius:10px;background:linear-gradient(135deg,#10B981,#06B6D4);color:#fff;font-weight:700;display:inline-block;margin-bottom:8px;">NIKAH</div>
+                    <div style="font-size:14px;font-weight:700;color:#1A1A1A;margin-bottom:2px;">The Big Day 💍</div>
+                    <div style="font-size:9px;color:#888;">From match to marriage — PairedM delivered</div>
+                  </div>
+                  <div style="padding:5px 10px;">
+                    <div class="explainer-match-card" style="animation-delay:0.3s;background:#f0fdf4;border:2px solid #10B981;">
+                      <div style="font-size:28px;text-align:center;margin-bottom:4px;">💍</div>
+                      <div style="font-size:13px;font-weight:800;color:#10B981;text-align:center;">Nikah Ceremony</div>
+                      <div style="font-size:9px;color:#888;text-align:center;margin-top:2px;">Ahmed &amp; Sarah — Alhamdulillah!</div>
+                    </div>
+                    <div class="explainer-match-card" style="animation-delay:0.6s;border-left:3px solid #10B981;">
+                      <div style="font-size:10px;font-weight:700;color:#10B981;margin-bottom:3px;">🕌 PairedM Arranged</div>
+                      <div style="font-size:9px;color:#555;line-height:1.4;">We booked the Imam, arranged the venue, coordinated the Mahr discussion, and helped plan the walima celebration.</div>
+                    </div>
+                    <div class="explainer-match-card" style="animation-delay:0.9s;">
+                      <div style="font-size:9px;color:#888;margin-bottom:4px;">What we handled</div>
+                      <div style="font-size:9px;color:#555;">✓ Imam booking &amp; Nikah paperwork</div>
+                      <div style="font-size:9px;color:#555;">✓ Walima venue &amp; catering</div>
+                      <div style="font-size:9px;color:#555;">✓ Full event coordination</div>
+                    </div>
+                  </div>
+                  <div style="padding:6px 10px;"><div class="explainer-btn" style="animation-delay:1.2s;background:linear-gradient(135deg,#10B981,#06B6D4);">Alhamdulillah! 🎉</div></div>
+                </div>
+              </div>
+              <div class="explainer-text">
+                <div class="explainer-step-badge" style="background:rgba(16,185,129,0.1);color:#10B981;">The Goal — Nikah</div>
+                <h3>Nikah &amp; Walima</h3>
+                <p>This is what it's all been leading to. Both families have agreed — now PairedM helps make the big day happen. <strong>We arrange the Imam, book the venue, coordinate the Mahr, and plan the walima.</strong> From your very first video call to your Nikah day, PairedM was with you every step of the way.</p>
+                <div style="margin-top:12px;font-size:13px;color:var(--text-tertiary);">🎉 This is the goal. Other apps never get you here.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video controls -->
+        <div class="explainer-controls">
+          <button class="explainer-play-btn" id="explainerPlayBtn" aria-label="Play/Pause">
+            <span class="explainer-icon-pause">❚❚</span>
+            <span class="explainer-icon-play" style="display:none;">▶</span>
+          </button>
+          <div class="explainer-timeline">
+            <div class="explainer-timeline-fill" id="explainerTimeline"></div>
+          </div>
+          <div class="explainer-dots">
+            <span class="explainer-dot active" data-dot="0"></span>
+            <span class="explainer-dot" data-dot="1"></span>
+            <span class="explainer-dot" data-dot="2"></span>
+            <span class="explainer-dot" data-dot="3"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- The journey summary below the explainer -->
+      <div class="fade-up" style="display:flex; gap:0; max-width:900px; margin:40px auto 0; position:relative;">
+        <div style="flex:1; text-align:center; padding:18px 10px; background:var(--card); border:1px solid var(--border); border-radius:14px 0 0 14px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#D32F2F,#E8720C);margin:0 auto 6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;">1</div>
+          <div style="font-size:12px;font-weight:700;color:var(--text-primary);">Video Call</div>
+          <div style="font-size:10px;color:var(--text-tertiary);">Supervised</div>
+        </div>
+        <div style="display:flex;align-items:center;color:var(--text-tertiary);font-size:16px;">→</div>
+        <div style="flex:1; text-align:center; padding:18px 10px; background:var(--card); border:1px solid var(--border);">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#E8720C,#F5A623);margin:0 auto 6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;">2</div>
+          <div style="font-size:12px;font-weight:700;color:var(--text-primary);">Mosque</div>
+          <div style="font-size:10px;color:var(--text-tertiary);">Face-to-face</div>
+        </div>
+        <div style="display:flex;align-items:center;color:var(--text-tertiary);font-size:16px;">→</div>
+        <div style="flex:1; text-align:center; padding:18px 10px; background:var(--card); border:1px solid var(--border);">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#F5A623,#D4A853);margin:0 auto 6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;">3</div>
+          <div style="font-size:12px;font-weight:700;color:var(--text-primary);">Family Meeting</div>
+          <div style="font-size:10px;color:var(--text-tertiary);">Both families</div>
+        </div>
+        <div style="display:flex;align-items:center;color:var(--text-tertiary);font-size:16px;">→</div>
+        <div style="flex:1; text-align:center; padding:18px 10px; background:linear-gradient(135deg,rgba(16,185,129,0.1),rgba(6,182,212,0.1)); border:2px solid #10B981; border-radius:0 14px 14px 0;">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#10B981,#06B6D4);margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:16px;">💍</div>
+          <div style="font-size:12px;font-weight:700;color:#10B981;">Nikah!</div>
+          <div style="font-size:10px;color:var(--text-tertiary);">Alhamdulillah</div>
         </div>
       </div>
     </div>
@@ -165,13 +1598,13 @@
   <section id="services" style="background: var(--card);">
     <div class="container">
       <div class="text-center">
-        <p class="section-label fade-in">Our Services</p>
-        <h2 class="section-title fade-in">Comprehensive <span class="text-gradient">Nikah Services</span></h2>
-        <p class="section-subtitle fade-in">From your first online meeting to your nikah celebration, we're with you every step.</p>
+        <p class="section-label fade-up">Our Services</p>
+        <h2 class="section-title fade-up">Comprehensive <span class="text-gradient">Nikah Services</span></h2>
+        <p class="section-subtitle fade-up">From your first online meeting to your nikah celebration, we're with you every step.</p>
       </div>
 
       <div class="services-grid">
-        <div class="service-card fade-in fade-in-delay-1">
+        <div class="service-card fade-up fade-up-d1">
           <div class="service-card-image">
             <img src="images/banner-safe-secure.jpg" alt="Online video call">
             <span class="service-badge badge-active">Active</span>
@@ -181,7 +1614,7 @@
             <p>Pair with a potential match and schedule an online call with us as hosts. Safe, supervised, and from the comfort of your home.</p>
           </div>
         </div>
-        <div class="service-card fade-in fade-in-delay-2">
+        <div class="service-card fade-up fade-up-d2">
           <div class="service-card-image">
             <img src="images/banner-coordinator.jpg" alt="Meet at mosque">
             <span class="service-badge badge-soon">Coming Soon</span>
@@ -191,7 +1624,7 @@
             <p>After a few meetings, we'll kick things up a notch and organise a meet-up at a local masjid with coordinator support.</p>
           </div>
         </div>
-        <div class="service-card fade-in fade-in-delay-3">
+        <div class="service-card fade-up fade-up-d3">
           <div class="service-card-image">
             <img src="images/banner-family.jpg" alt="Meet at venue">
             <span class="service-badge badge-soon">Coming Soon</span>
@@ -201,7 +1634,7 @@
             <p>Later down the line, we'll set up a meeting in a venue of your choice for a more personal, family-involved meeting.</p>
           </div>
         </div>
-        <div class="service-card fade-in fade-in-delay-4">
+        <div class="service-card fade-up fade-up-d4">
           <div class="service-card-image">
             <img src="images/banner-best-nikah.jpg" alt="Arrange events">
             <span class="service-badge badge-soon">Coming Soon</span>
@@ -215,33 +1648,67 @@
     </div>
   </section>
 
-  <!-- Why Choose Us -->
+  <!-- PairedM vs Others — Comparison -->
   <section id="why-us">
-    <div class="container text-center">
-      <p class="section-label fade-in">Why PairedM</p>
-      <h2 class="section-title fade-in">What Makes Us <span class="text-gradient">Different</span></h2>
+    <div class="container">
+      <div class="text-center">
+        <p class="section-label fade-up">PairedM vs The Rest</p>
+        <h2 class="section-title fade-up">See Why We're <span class="text-gradient">Different</span></h2>
+        <p class="section-subtitle fade-up">A side-by-side look at how PairedM compares to typical Muslim dating apps.</p>
+      </div>
 
-      <div class="features-grid">
-        <div class="feature-card fade-in fade-in-delay-1">
-          <div class="feature-icon">🕌</div>
-          <h4>Islamic Guidance</h4>
-          <p>Shariah-compliant matching aligned with the Sunnah, overseen by our Board of Islamic Scholars.</p>
-        </div>
-        <div class="feature-card fade-in fade-in-delay-2">
-          <div class="feature-icon">🇬🇧</div>
-          <h4>Nationwide UK</h4>
-          <p>Our team is set up to help pair individuals across the UK with English-speaking Imams.</p>
-        </div>
-        <div class="feature-card fade-in fade-in-delay-3">
-          <div class="feature-icon">🔒</div>
-          <h4>Fully Vetted</h4>
-          <p>Thorough background checks to ensure you get an honest insight into your potential match.</p>
-        </div>
-        <div class="feature-card fade-in fade-in-delay-4">
-          <div class="feature-icon">💰</div>
-          <h4>Pay As You Go</h4>
-          <p>Zero subscription fees. Nominal charges of only £5-£10. Free registration and free for sisters.</p>
-        </div>
+      <div class="fade-up" style="max-width:800px; margin:0 auto; overflow:hidden; border-radius:16px; border:1px solid var(--border);">
+        <table style="width:100%; border-collapse:collapse; font-size:15px;">
+          <thead>
+            <tr style="background:linear-gradient(135deg,#D32F2F,#E8720C);">
+              <th style="padding:16px 20px; text-align:left; color:#fff; font-weight:600; width:40%;">Feature</th>
+              <th style="padding:16px 20px; text-align:center; color:#fff; font-weight:700; width:30%;">PairedM</th>
+              <th style="padding:16px 20px; text-align:center; color:rgba(255,255,255,0.7); font-weight:500; width:30%;">Other Apps</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:var(--card); border-bottom:1px solid var(--border);">
+              <td style="padding:14px 20px; font-weight:500; color:var(--text-primary);">Meetings are face-to-face</td>
+              <td style="padding:14px 20px; text-align:center; color:#10B981; font-weight:700;">✓ Always</td>
+              <td style="padding:14px 20px; text-align:center; color:#EF4444;">✗ Chat only</td>
+            </tr>
+            <tr style="background:var(--bg); border-bottom:1px solid var(--border);">
+              <td style="padding:14px 20px; font-weight:500; color:var(--text-primary);">Coordinator present</td>
+              <td style="padding:14px 20px; text-align:center; color:#10B981; font-weight:700;">✓ Every call</td>
+              <td style="padding:14px 20px; text-align:center; color:#EF4444;">✗ Never</td>
+            </tr>
+            <tr style="background:var(--card); border-bottom:1px solid var(--border);">
+              <td style="padding:14px 20px; font-weight:500; color:var(--text-primary);">Islamic scholar oversight</td>
+              <td style="padding:14px 20px; text-align:center; color:#10B981; font-weight:700;">✓ Board certified</td>
+              <td style="padding:14px 20px; text-align:center; color:#EF4444;">✗ None</td>
+            </tr>
+            <tr style="background:var(--bg); border-bottom:1px solid var(--border);">
+              <td style="padding:14px 20px; font-weight:500; color:var(--text-primary);">Structured path to Nikah</td>
+              <td style="padding:14px 20px; text-align:center; color:#10B981; font-weight:700;">✓ 3-level system</td>
+              <td style="padding:14px 20px; text-align:center; color:#EF4444;">✗ No structure</td>
+            </tr>
+            <tr style="background:var(--card); border-bottom:1px solid var(--border);">
+              <td style="padding:14px 20px; font-weight:500; color:var(--text-primary);">Pricing model</td>
+              <td style="padding:14px 20px; text-align:center; color:#10B981; font-weight:700;">✓ Pay per meeting</td>
+              <td style="padding:14px 20px; text-align:center; color:#EF4444;">✗ Monthly subscription</td>
+            </tr>
+            <tr style="background:var(--bg); border-bottom:1px solid var(--border);">
+              <td style="padding:14px 20px; font-weight:500; color:var(--text-primary);">Free for sisters</td>
+              <td style="padding:14px 20px; text-align:center; color:#10B981; font-weight:700;">✓ 100% free</td>
+              <td style="padding:14px 20px; text-align:center; color:#EF4444;">✗ Same price</td>
+            </tr>
+            <tr style="background:var(--card); border-bottom:1px solid var(--border);">
+              <td style="padding:14px 20px; font-weight:500; color:var(--text-primary);">Background checks</td>
+              <td style="padding:14px 20px; text-align:center; color:#10B981; font-weight:700;">✓ Thorough vetting</td>
+              <td style="padding:14px 20px; text-align:center; color:#F59E0B;">~ Basic only</td>
+            </tr>
+            <tr style="background:var(--bg);">
+              <td style="padding:14px 20px; font-weight:500; color:var(--text-primary);">Family involvement</td>
+              <td style="padding:14px 20px; text-align:center; color:#10B981; font-weight:700;">✓ Built into Level 3</td>
+              <td style="padding:14px 20px; text-align:center; color:#EF4444;">✗ Not supported</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </section>
@@ -249,12 +1716,12 @@
   <!-- Testimonials -->
   <section class="testimonials-section">
     <div class="container text-center">
-      <p class="section-label fade-in">Success Stories</p>
-      <h2 class="section-title fade-in">Blessed Unions Through <span class="text-gradient">PairedM</span></h2>
+      <p class="section-label fade-up">Success Stories</p>
+      <h2 class="section-title fade-up">Blessed Unions Through <span class="text-gradient">PairedM</span></h2>
 
       <div class="testimonials-grid">
-        <div class="testimonial-card fade-in fade-in-delay-1">
-          <span class="testimonial-quote">"</span>
+        <div class="testimonial-card fade-up fade-up-d1">
+          <span class="testimonial-quote">&ldquo;</span>
           <p class="testimonial-text">I thank the PairedM site for finding my soul life partner. The process was smooth and the coordinators were so supportive throughout.</p>
           <div class="testimonial-author">
             <div class="testimonial-avatar">A</div>
@@ -264,8 +1731,8 @@
             </div>
           </div>
         </div>
-        <div class="testimonial-card fade-in fade-in-delay-2">
-          <span class="testimonial-quote">"</span>
+        <div class="testimonial-card fade-up fade-up-d2">
+          <span class="testimonial-quote">&ldquo;</span>
           <p class="testimonial-text">We got engaged and later married within a few months. Alhamdulillah, PairedM made the whole journey so easy and stress-free.</p>
           <div class="testimonial-author">
             <div class="testimonial-avatar">S</div>
@@ -275,8 +1742,8 @@
             </div>
           </div>
         </div>
-        <div class="testimonial-card fade-in fade-in-delay-3">
-          <span class="testimonial-quote">"</span>
+        <div class="testimonial-card fade-up fade-up-d3">
+          <span class="testimonial-quote">&ldquo;</span>
           <p class="testimonial-text">I want to say thanks to the entire team of PairedM for giving me the opportunity to meet my soul mate. Truly blessed.</p>
           <div class="testimonial-author">
             <div class="testimonial-avatar">I</div>
@@ -290,13 +1757,235 @@
     </div>
   </section>
 
-  <!-- CTA -->
+  <!-- Real Stories, Real Unions -->
+  <section class="stories-section">
+    <div class="container text-center">
+      <p class="section-label fade-up">Inspiring Journeys</p>
+      <h2 class="section-title fade-up">Real Stories, Real <span class="text-gradient">Unions</span></h2>
+
+      <div class="stories-grid">
+        <div class="story-card story-card-1 fade-up fade-up-d1" data-story="0">
+          <div class="story-card-icon">&#128747;</div>
+          <h4>The Long-Distance Match</h4>
+          <p class="story-tagline">A couple from different UK cities</p>
+          <div class="story-quote-panel">
+            <p>"We were 200 miles apart but PairedM brought us together. The coordinator arranged video calls first, then mosque meetings. Now we're happily married and living in Birmingham. Alhamdulillah."</p>
+          </div>
+        </div>
+        <div class="story-card story-card-2 fade-up fade-up-d2" data-story="1">
+          <div class="story-card-icon">&#127775;</div>
+          <h4>The Revert's Journey</h4>
+          <p class="story-tagline">A new Muslim finding a spouse</p>
+          <div class="story-quote-panel">
+            <p>"As a revert, I was worried about finding someone who'd understand my journey. PairedM matched me with someone patient and understanding. The coordinators were especially kind and supportive."</p>
+          </div>
+        </div>
+        <div class="story-card story-card-3 fade-up fade-up-d3" data-story="2">
+          <div class="story-card-icon">&#128156;</div>
+          <h4>Second Chance at Love</h4>
+          <p class="story-tagline">A divorcee finding happiness again</p>
+          <div class="story-quote-panel">
+            <p>"After my divorce, I thought I'd never find love again. PairedM treated my case with so much care and respect. Within months, I found someone who truly values me. JazakAllah Khair."</p>
+          </div>
+        </div>
+        <div class="story-card story-card-4 fade-up fade-up-d4" data-story="3">
+          <div class="story-card-icon">&#128106;</div>
+          <h4>The Family-Approved Match</h4>
+          <p class="story-tagline">Parents happy with the process</p>
+          <div class="story-quote-panel">
+            <p>"My parents were sceptical of online matching, but when they saw the coordinator-led process and Sharia compliance, they were completely on board. Both families are overjoyed."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Accordion -->
+  <section class="faq-section">
+    <div class="container">
+      <div class="text-center">
+        <p class="section-label fade-up">FAQ</p>
+        <h2 class="section-title fade-up">Questions you're probably <span class="text-gradient">asking</span></h2>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item fade-up">
+          <button class="faq-question">
+            <span>How much does PairedM cost?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">PairedM works on a pay-as-you-go basis with no subscription fees. Registration is completely free. When you decide to pursue a match, nominal charges of just &pound;5-&pound;10 apply. The service is entirely free for sisters.</div>
+          </div>
+        </div>
+        <div class="faq-item fade-up fade-up-d1">
+          <button class="faq-question">
+            <span>Is PairedM really free for sisters?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Yes, absolutely. PairedM is 100% free for sisters — from registration to matching to meetings. We believe in making the process as accessible as possible for women seeking a halal marriage.</div>
+          </div>
+        </div>
+        <div class="faq-item fade-up fade-up-d2">
+          <button class="faq-question">
+            <span>How does the coordinator system work?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Every meeting on PairedM is supervised by an independent coordinator. They are present during video calls, mosque meet-ups, and venue meetings. This ensures safety, Islamic propriety, and a comfortable environment for both parties.</div>
+          </div>
+        </div>
+        <div class="faq-item fade-up fade-up-d3">
+          <button class="faq-question">
+            <span>Is PairedM Sharia-compliant?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Yes. PairedM is certified halal by our Board of Islamic Scholars. Every aspect of our service — from how profiles are shared to how meetings are conducted — is aligned with Islamic principles and the Sunnah.</div>
+          </div>
+        </div>
+        <div class="faq-item fade-up">
+          <button class="faq-question">
+            <span>What areas of the UK do you cover?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">PairedM operates across the entire UK. We have coordinators and English-speaking Imams available in over 50 cities. Whether you're in London, Manchester, Birmingham, or anywhere else, we can help.</div>
+          </div>
+        </div>
+        <div class="faq-item fade-up fade-up-d1">
+          <button class="faq-question">
+            <span>How long does the matching process take?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">It varies from person to person. Some members find their match within weeks, while others take a few months. Our coordinators work actively to find compatible matches based on your preferences and values.</div>
+          </div>
+        </div>
+        <div class="faq-item fade-up fade-up-d2">
+          <button class="faq-question">
+            <span>Can my parents be involved?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Absolutely. We encourage family involvement. Parents and guardians are welcome at venue meetings, and our coordinators can communicate directly with families to ensure everyone is comfortable with the process.</div>
+          </div>
+        </div>
+        <div class="faq-item fade-up fade-up-d3">
+          <button class="faq-question">
+            <span>What happens after I register?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">After registering, you'll create your profile and set your preferences. Our team will verify your profile and start searching for compatible matches. Once a potential match is found, a coordinator will reach out to arrange a supervised meeting.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA — Parallax -->
   <section class="cta-section">
     <div class="cta-bg"></div>
+    <div class="cta-particles">
+      <div class="cta-particle"></div>
+      <div class="cta-particle"></div>
+      <div class="cta-particle"></div>
+      <div class="cta-particle"></div>
+      <div class="cta-particle"></div>
+    </div>
     <div class="container" style="position: relative;">
-      <h2 class="fade-in">Ready to Find Your <span class="text-gradient">Soulmate?</span></h2>
-      <p class="fade-in">Start your journey towards a blessed marriage today. Registration is free and our coordinators are ready to help.</p>
-      <a href="register.html" class="btn btn-primary btn-lg btn-arrow fade-in">Get Started Free</a>
+      <h2 class="fade-up">Done With Swiping?<br>Let's Get You <span class="brush-highlight text-gradient">Married.</span></h2>
+      <p class="fade-up">Register for free. Get matched with someone serious. Meet face-to-face with a coordinator present. No subscriptions. No ghosting. No games. Sisters join completely free.</p>
+      <a href="register.html" class="btn btn-primary btn-lg btn-arrow fade-up">Register Free — Takes 2 Minutes</a>
+      <p class="fade-up" style="font-size:13px; margin-top:16px; opacity:0.6;">Free registration. Pay only when you meet. £5-£10 per meeting. Sisters always free.</p>
+    </div>
+  </section>
+
+  <!-- App Coming Soon -->
+  <section class="app-coming-section">
+    <div class="container">
+      <div class="app-coming-grid">
+        <div class="app-coming-text fade-up">
+          <p class="section-label">Coming Soon</p>
+          <h2>The PairedM App is <span class="text-gradient">Coming</span></h2>
+          <p>We're building a beautiful mobile app to make your journey even easier. Browse profiles, chat with your coordinator, and manage meetings — all from your phone.</p>
+          <div class="app-notify-form">
+            <input type="email" placeholder="Enter your email for updates" aria-label="Email for app launch notification">
+            <button class="btn btn-primary">Notify Me</button>
+          </div>
+        </div>
+        <div class="fade-up fade-up-d2">
+          <div class="phone-mockup">
+            <div class="phone-screen">
+              <div class="phone-header">
+                <img src="images/logo.png" alt="PairedM">
+                <div class="phone-header-text">Unite By Meeting</div>
+              </div>
+              <div class="phone-body">
+                <div class="phone-card">
+                  <div class="phone-card-row">
+                    <div class="phone-avatar"></div>
+                    <div class="phone-card-lines">
+                      <div class="phone-line"></div>
+                      <div class="phone-line"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="phone-card">
+                  <div class="phone-card-row">
+                    <div class="phone-avatar"></div>
+                    <div class="phone-card-lines">
+                      <div class="phone-line"></div>
+                      <div class="phone-line"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="phone-card">
+                  <div class="phone-card-row">
+                    <div class="phone-avatar"></div>
+                    <div class="phone-card-lines">
+                      <div class="phone-line"></div>
+                      <div class="phone-line"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="phone-btn-mock"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Signals -->
+  <section class="trust-section">
+    <div class="container">
+      <h2 class="section-title fade-up">Trusted &amp; <span class="text-gradient">Certified</span></h2>
+      <div class="trust-grid">
+        <div class="trust-item fade-up fade-up-d1">
+          <div class="trust-icon">&#128220;</div>
+          <h4>Islamic Board Certified</h4>
+        </div>
+        <div class="trust-item fade-up fade-up-d2">
+          <div class="trust-icon">&#128274;</div>
+          <h4>GDPR Compliant</h4>
+        </div>
+        <div class="trust-item fade-up fade-up-d3">
+          <div class="trust-icon">&#9989;</div>
+          <h4>Verified Profiles</h4>
+        </div>
+        <div class="trust-item fade-up fade-up-d4">
+          <div class="trust-icon">&#128101;</div>
+          <h4>Coordinator Present</h4>
+        </div>
+        <div class="trust-item fade-up fade-up-d5">
+          <div class="trust-icon">&#128737;</div>
+          <h4>Safe &amp; Secure</h4>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -341,10 +2030,281 @@
   </footer>
 
   <div class="coordinator-badge">
-    <span class="coordinator-badge-icon">👥</span>
+    <span class="coordinator-badge-icon">&#128101;</span>
     <span>Independent Coordinator Present in Every Meeting</span>
   </div>
 
   <script src="js/main.js"></script>
+
+  <script>
+    /* ============================================
+       PairedM Index Page — Enhanced Inline JS
+       ============================================ */
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // ---------- Enhanced Scroll Animations (fade-up) ----------
+      const fadeUpEls = document.querySelectorAll('.fade-up');
+      const fadeUpObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            fadeUpObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+      fadeUpEls.forEach(el => fadeUpObserver.observe(el));
+
+      // ---------- Navbar blur on scroll ----------
+      const header = document.querySelector('.header');
+      if (header) {
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 80) {
+            header.classList.add('scrolled');
+          } else {
+            header.classList.remove('scrolled');
+          }
+        });
+      }
+
+      // ---------- Brush Highlight Sweep ----------
+      const brushEls = document.querySelectorAll('.brush-highlight');
+      const brushObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('sweep');
+            brushObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+      brushEls.forEach(el => brushObserver.observe(el));
+
+      // ---------- Hero Testimonial Carousel ----------
+      const htItems = document.querySelectorAll('.hero-testimonial-item');
+      const htDots = document.querySelectorAll('.ht-dot');
+      let htCurrent = 0;
+      let htInterval;
+
+      function setHeroTestimonial(index) {
+        htItems.forEach(item => item.classList.remove('active'));
+        htDots.forEach(dot => dot.classList.remove('active'));
+        htItems[index].classList.add('active');
+        htDots[index].classList.add('active');
+        htCurrent = index;
+      }
+
+      function startHtRotation() {
+        htInterval = setInterval(() => {
+          setHeroTestimonial((htCurrent + 1) % htItems.length);
+        }, 5000);
+      }
+
+      htDots.forEach(dot => {
+        dot.addEventListener('click', () => {
+          clearInterval(htInterval);
+          setHeroTestimonial(parseInt(dot.getAttribute('data-ht-dot')));
+          startHtRotation();
+        });
+      });
+
+      if (htItems.length > 0) startHtRotation();
+
+      // ---------- Animated Stat Counters ----------
+      const statNumbers = document.querySelectorAll('.stat-number[data-count]');
+      let statsCounted = false;
+
+      function animateCounters() {
+        if (statsCounted) return;
+        statsCounted = true;
+
+        statNumbers.forEach(el => {
+          const target = parseInt(el.getAttribute('data-count'));
+          const suffix = el.getAttribute('data-suffix') || '';
+          const duration = 2000;
+          const start = performance.now();
+
+          function update(now) {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            // cubic bezier easing
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = Math.round(eased * target);
+            el.textContent = current + suffix;
+            if (progress < 1) requestAnimationFrame(update);
+          }
+
+          requestAnimationFrame(update);
+        });
+      }
+
+      const statsSection = document.querySelector('.stats-section');
+      if (statsSection) {
+        const statsObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              animateCounters();
+              statsObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.3 });
+        statsObserver.observe(statsSection);
+      }
+
+      // ---------- Interactive Process Steps ----------
+      const processSteps = document.querySelectorAll('.process-step-item');
+      const processVisuals = document.querySelectorAll('.process-visual-content');
+      const progressBar = document.querySelector('.process-progress-bar');
+
+      processSteps.forEach(step => {
+        step.addEventListener('click', () => {
+          const index = parseInt(step.getAttribute('data-step'));
+
+          processSteps.forEach(s => s.classList.remove('active'));
+          processVisuals.forEach(v => v.classList.remove('active'));
+
+          step.classList.add('active');
+          processVisuals[index].classList.add('active');
+
+          if (progressBar) {
+            progressBar.style.width = ((index + 1) / processSteps.length * 100) + '%';
+          }
+        });
+      });
+
+      // ---------- User Story Cards (expand one at a time) ----------
+      const storyCards = document.querySelectorAll('.story-card');
+      storyCards.forEach(card => {
+        card.addEventListener('click', () => {
+          const isExpanded = card.classList.contains('expanded');
+          storyCards.forEach(c => c.classList.remove('expanded'));
+          if (!isExpanded) {
+            card.classList.add('expanded');
+          }
+        });
+      });
+
+      // ---------- FAQ Accordion ----------
+      const faqItems = document.querySelectorAll('.faq-item');
+      faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        const inner = item.querySelector('.faq-answer-inner');
+
+        question.addEventListener('click', () => {
+          const isOpen = item.classList.contains('open');
+
+          // Close all
+          faqItems.forEach(fi => {
+            fi.classList.remove('open');
+            fi.querySelector('.faq-answer').style.maxHeight = '0';
+          });
+
+          // Open this one if it was closed
+          if (!isOpen) {
+            item.classList.add('open');
+            answer.style.maxHeight = inner.scrollHeight + 'px';
+          }
+        });
+      });
+
+      // ---------- Parallax CTA on scroll ----------
+      const ctaSection = document.querySelector('.cta-section');
+      if (ctaSection) {
+        const ctaParticles = ctaSection.querySelector('.cta-particles');
+        window.addEventListener('scroll', () => {
+          const rect = ctaSection.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            const offset = (window.innerHeight - rect.top) * 0.05;
+            if (ctaParticles) {
+              ctaParticles.style.transform = 'translateY(' + (-offset) + 'px)';
+            }
+          }
+        });
+      }
+
+    });
+
+    // ── Explainer Video Player ──
+    (function() {
+      const scenes = document.querySelectorAll('.explainer-scene');
+      const dots = document.querySelectorAll('.explainer-dot');
+      const timeline = document.getElementById('explainerTimeline');
+      const playBtn = document.getElementById('explainerPlayBtn');
+      if (!scenes.length || !timeline || !playBtn) return;
+
+      let current = 0;
+      let playing = true;
+      let elapsed = 0;
+      const SCENE_DURATION = 5000; // 5 seconds per step
+      const TICK = 50;
+      let timer = null;
+
+      function goToScene(idx) {
+        scenes.forEach(s => s.classList.remove('active'));
+        dots.forEach(d => d.classList.remove('active'));
+        scenes[idx].classList.add('active');
+        dots[idx].classList.add('active');
+        current = idx;
+        elapsed = 0;
+      }
+
+      function tick() {
+        elapsed += TICK;
+        const totalDuration = SCENE_DURATION * scenes.length;
+        const globalElapsed = current * SCENE_DURATION + elapsed;
+        const pct = (globalElapsed / totalDuration) * 100;
+        timeline.style.width = Math.min(pct, 100) + '%';
+
+        if (elapsed >= SCENE_DURATION) {
+          if (current < scenes.length - 1) {
+            goToScene(current + 1);
+          } else {
+            // Loop back
+            goToScene(0);
+          }
+        }
+      }
+
+      function startPlaying() {
+        if (timer) clearInterval(timer);
+        timer = setInterval(tick, TICK);
+        playing = true;
+        playBtn.querySelector('.explainer-icon-pause').style.display = '';
+        playBtn.querySelector('.explainer-icon-play').style.display = 'none';
+      }
+
+      function stopPlaying() {
+        if (timer) clearInterval(timer);
+        timer = null;
+        playing = false;
+        playBtn.querySelector('.explainer-icon-pause').style.display = 'none';
+        playBtn.querySelector('.explainer-icon-play').style.display = '';
+      }
+
+      playBtn.addEventListener('click', () => {
+        if (playing) stopPlaying();
+        else startPlaying();
+      });
+
+      dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+          goToScene(parseInt(dot.dataset.dot));
+          if (!playing) startPlaying();
+        });
+      });
+
+      // Start when visible
+      const explainerObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            startPlaying();
+            explainerObs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+
+      explainerObs.observe(document.getElementById('explainerVideo'));
+    })();
+
+  </script>
 </body>
 </html>
