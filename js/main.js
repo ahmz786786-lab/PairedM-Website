@@ -2,6 +2,10 @@
    PairedM Website — JavaScript
    ============================================ */
 
+// Web3Forms access key (free, no signup needed — create one at web3forms.com)
+// Replace this placeholder with your real access key to receive form submissions.
+const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY_HERE';
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // ---------- Mobile Nav Toggle ----------
@@ -15,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
     });
 
-    // Close on link click
     mobileNav.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
         hamburger.classList.remove('active');
@@ -77,40 +80,168 @@ document.addEventListener('DOMContentLoaded', () => {
 
   fadeElements.forEach(el => observer.observe(el));
 
+  // ---------- Scroll Progress Bar ----------
+  const progressBar = document.querySelector('.scroll-progress');
+  if (progressBar) {
+    const updateProgress = () => {
+      const scrolled = window.scrollY;
+      const height = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = height > 0 ? (scrolled / height) * 100 : 0;
+      progressBar.style.width = pct + '%';
+    };
+    updateProgress();
+    window.addEventListener('scroll', updateProgress, { passive: true });
+  }
+
+  // ---------- Animated Number Counters ----------
+  const counters = document.querySelectorAll('[data-counter]');
+  if (counters.length) {
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = parseFloat(el.dataset.counter);
+        const suffix = el.dataset.suffix || '';
+        const prefix = el.dataset.prefix || '';
+        const duration = 1600;
+        const start = performance.now();
+        const step = (now) => {
+          const p = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          const value = target * eased;
+          const display = Number.isInteger(target) ? Math.round(value) : value.toFixed(1);
+          el.textContent = prefix + display + suffix;
+          if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+        counterObserver.unobserve(el);
+      });
+    }, { threshold: 0.3 });
+    counters.forEach(el => counterObserver.observe(el));
+  }
+
+  // ---------- 3D Card Tilt ----------
+  const tiltCards = document.querySelectorAll('[data-tilt]');
+  tiltCards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = `perspective(1000px) rotateX(${-y * 6}deg) rotateY(${x * 6}deg) translateY(-4px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+
   // ---------- Header Scroll Effect ----------
   const header = document.querySelector('.header');
   if (header) {
-    let lastScroll = 0;
     window.addEventListener('scroll', () => {
-      const currentScroll = window.scrollY;
-      if (currentScroll > 50) {
-        header.style.borderBottomColor = 'var(--border)';
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
       } else {
-        header.style.borderBottomColor = 'transparent';
+        header.classList.remove('scrolled');
       }
-      lastScroll = currentScroll;
-    });
+    }, { passive: true });
   }
 
-  // ---------- Contact Form ----------
+  // ---------- Form validation ----------
+  const attachValidation = (form) => {
+    if (!form) return;
+    const fields = form.querySelectorAll('input[required], textarea[required], input[type="email"]');
+    fields.forEach(field => {
+      field.addEventListener('blur', () => validateField(field));
+      field.addEventListener('input', () => {
+        if (field.classList.contains('invalid')) validateField(field);
+      });
+    });
+  };
+
+  const validateField = (field) => {
+    const group = field.closest('.form-group');
+    if (!group) return field.checkValidity();
+    let error = group.querySelector('.form-error');
+    if (!error) {
+      error = document.createElement('span');
+      error.className = 'form-error';
+      group.appendChild(error);
+    }
+    if (!field.value.trim() && field.hasAttribute('required')) {
+      field.classList.add('invalid');
+      field.classList.remove('valid');
+      error.textContent = 'This field is required';
+      return false;
+    }
+    if (field.type === 'email' && field.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value)) {
+      field.classList.add('invalid');
+      field.classList.remove('valid');
+      error.textContent = 'Please enter a valid email';
+      return false;
+    }
+    field.classList.remove('invalid');
+    field.classList.add('valid');
+    error.textContent = '';
+    return true;
+  };
+
+  // ---------- Contact Form (real submit via Web3Forms) ----------
   const contactForm = document.querySelector('#contact-form');
+  attachValidation(contactForm);
+
   if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const formData = new FormData(contactForm);
-      const name = formData.get('name');
 
-      // Show success message
-      const btn = contactForm.querySelector('.btn');
+      // Validate all fields before submit
+      const fields = contactForm.querySelectorAll('input[required], textarea[required], input[type="email"]');
+      let allValid = true;
+      fields.forEach(f => { if (!validateField(f)) allValid = false; });
+      if (!allValid) return;
+
+      const btn = contactForm.querySelector('button[type="submit"]');
       const originalText = btn.textContent;
-      btn.textContent = 'Message Sent!';
-      btn.style.background = 'var(--success)';
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
 
-      setTimeout(() => {
-        btn.textContent = originalText;
-        btn.style.background = '';
-        contactForm.reset();
-      }, 3000);
+      const formData = new FormData(contactForm);
+      formData.append('access_key', WEB3FORMS_ACCESS_KEY);
+      formData.append('from_name', 'PairedM Website');
+      formData.append('subject', formData.get('subject') || 'New enquiry from PairedM site');
+
+      try {
+        if (WEB3FORMS_ACCESS_KEY === 'YOUR_WEB3FORMS_ACCESS_KEY_HERE') {
+          throw new Error('Form not yet configured — please contact us at info@pairedm.co.uk directly.');
+        }
+
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: formData,
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          btn.textContent = '✓ Message Sent';
+          btn.style.background = 'var(--success)';
+          contactForm.reset();
+          contactForm.querySelectorAll('.valid, .invalid').forEach(el => el.classList.remove('valid', 'invalid'));
+          setTimeout(() => {
+            btn.textContent = originalText;
+            btn.style.background = '';
+            btn.disabled = false;
+          }, 4000);
+        } else {
+          throw new Error(data.message || 'Submission failed');
+        }
+      } catch (err) {
+        btn.textContent = '✕ ' + (err.message.length > 40 ? 'Failed — try email' : err.message);
+        btn.style.background = 'var(--error)';
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 4000);
+      }
     });
   }
 
@@ -137,5 +268,30 @@ document.addEventListener('DOMContentLoaded', () => {
       link.classList.add('active');
     }
   });
+
+  // ---------- Interactive Process Timeline ----------
+  document.querySelectorAll('.timeline-step').forEach(step => {
+    step.addEventListener('click', () => {
+      const wasActive = step.classList.contains('active');
+      step.parentElement.querySelectorAll('.timeline-step').forEach(s => s.classList.remove('active'));
+      if (!wasActive) step.classList.add('active');
+    });
+  });
+
+  // ---------- Testimonial Carousel Indicator ----------
+  const carouselTrack = document.querySelector('.testimonial-carousel');
+  const carouselIndicator = document.querySelector('.testimonial-indicator');
+  if (carouselTrack && carouselIndicator) {
+    const total = carouselTrack.querySelectorAll('.testimonial-card').length;
+    const indicator = carouselIndicator.querySelector('.testimonial-indicator-current');
+    const totalEl = carouselIndicator.querySelector('.testimonial-indicator-total');
+    if (totalEl) totalEl.textContent = total;
+    let current = 0;
+    const tick = () => {
+      current = (current + 1) % total;
+      if (indicator) indicator.textContent = current + 1;
+    };
+    setInterval(tick, 4000);
+  }
 
 });
