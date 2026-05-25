@@ -460,6 +460,49 @@ section {
   flex-wrap: wrap;
 }
 
+/* Launch announcement banner */
+.launch-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 5px var(--space-md) 5px 5px;
+  background: rgba(211, 47, 47, 0.07);
+  border: 1px solid rgba(211, 47, 47, 0.22);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-lg);
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 16px rgba(211, 47, 47, 0.12);
+}
+.launch-banner:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(211, 47, 47, 0.22);
+}
+.launch-pill {
+  background: var(--gradient-primary);
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+.launch-text {
+  color: var(--text-primary);
+  font-size: 13.5px;
+  font-weight: 500;
+}
+.launch-arrow {
+  color: var(--red);
+  font-weight: 700;
+  font-size: 15px;
+}
+@media (max-width: 600px) {
+  .launch-text { font-size: 12px; }
+  .launch-pill { font-size: 11px; padding: 4px 10px; }
+}
+
 .hero-tags {
   display: flex;
   gap: var(--space-md);
