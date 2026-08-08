@@ -65,20 +65,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ---------- Scroll Animations ----------
   const fadeElements = document.querySelectorAll('.fade-in');
+  const revealAllFade = () => { for (let i = 0; i < fadeElements.length; i++) fadeElements[i].classList.add('visible'); };
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -40px 0px',
-  });
-
-  fadeElements.forEach(el => observer.observe(el));
+  try {
+    if (typeof IntersectionObserver === 'function') {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -40px 0px',
+      });
+      fadeElements.forEach(el => observer.observe(el));
+    } else {
+      revealAllFade(); // old browser (e.g. older iOS Safari) — show everything
+    }
+  } catch (e) {
+    revealAllFade();
+  }
+  // Unconditional fail-safe: content is never left hidden, whatever happens above.
+  setTimeout(revealAllFade, 2500);
 
   // ---------- Scroll Progress Bar ----------
   const progressBar = document.querySelector('.scroll-progress');
@@ -95,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ---------- Animated Number Counters ----------
   const counters = document.querySelectorAll('[data-counter]');
-  if (counters.length) {
+  if (counters.length && typeof IntersectionObserver === 'function') {
     const counterObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
