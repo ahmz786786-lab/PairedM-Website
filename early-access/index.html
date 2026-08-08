@@ -146,6 +146,23 @@
     input[type=number]::-webkit-outer-spin-button,
     input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 
+    .field select{
+      width:100%;padding:14px 44px 14px 16px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.2);
+      background-color:rgba(255,255,255,.08);
+      color:#fff;font-family:inherit;font-size:1rem;cursor:pointer;
+      -webkit-appearance:none;-moz-appearance:none;appearance:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23ffffff' stroke-opacity='.65' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;background-position:right 16px center;background-size:12px 8px;
+    }
+    .field select:focus{outline:none;border-color:var(--gold);background-color:rgba(255,255,255,.13)}
+    /* Nothing chosen yet reads as a placeholder, matching the text inputs. */
+    .field select:invalid{color:rgba(255,255,255,.4)}
+    /* The dropdown list is drawn by the OS — give it its own readable colours
+       rather than letting options inherit the translucent dark background. */
+    .field select option{background:#241A18;color:#fff}
+    .field select option[value=""]{color:rgba(255,255,255,.5)}
+
     /* Tap-to-answer chips */
     .chips{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:9px}
     .chips input{position:absolute;opacity:0;pointer-events:none}
@@ -321,21 +338,18 @@
             <p>Takes about 20 seconds. We'll let you know the moment we open near you.</p>
           </div>
 
-          <!-- Deliberately first: it's a one-tap answer, so nobody has to start
-               by typing, and it tells us who's actually ready to marry. -->
-          <fieldset class="field">
-            <legend class="legend">When are you hoping to marry?</legend>
-            <div class="chips">
-              <input type="radio" id="t-asap" name="timeline" value="asap">
-              <label for="t-asap">As soon as possible</label>
-              <input type="radio" id="t-6" name="timeline" value="6_months">
-              <label for="t-6">Within 6 months</label>
-              <input type="radio" id="t-12" name="timeline" value="12_months">
-              <label for="t-12">Within a year</label>
-              <input type="radio" id="t-exp" name="timeline" value="exploring">
-              <label for="t-exp">Still exploring</label>
-            </div>
-          </fieldset>
+          <!-- Deliberately first: it's answered without typing, and it tells us
+               who's actually ready to marry. -->
+          <div class="field">
+            <label for="f-timeline">When are you hoping to marry?</label>
+            <select id="f-timeline" name="timeline" required>
+              <option value="" disabled selected>Select an option</option>
+              <option value="asap">As soon as possible</option>
+              <option value="6_months">Within 6 months</option>
+              <option value="12_months">Within a year</option>
+              <option value="exploring">Still exploring</option>
+            </select>
+          </div>
 
           <fieldset class="field">
             <legend class="legend">I am a</legend>
@@ -565,7 +579,7 @@
 
   // Send focus to whatever still needs answering, so the error isn't a dead end.
   function focusFirstGap(data) {
-    var target = !data.get('timeline') ? document.getElementById('t-asap')
+    var target = !data.get('timeline') ? document.getElementById('f-timeline')
                : !data.get('gender')   ? document.getElementById('g-m')
                : form.querySelector('input[name=email]');
     if (target) target.focus();
@@ -607,7 +621,7 @@
   // The closing CTA scrolls back to the one form rather than duplicating it.
   document.getElementById('jumpToForm').addEventListener('click', function () {
     card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    var first = document.getElementById('t-asap');
+    var first = document.getElementById('f-timeline');
     if (first && form.style.display !== 'none') setTimeout(function () { first.focus(); }, 450);
   });
 
